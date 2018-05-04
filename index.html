@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript">
+            
+window.onload=function(){
+function work() {
+var text = document.getElementById('prefix').value;
+var suffix = document.getElementById('suffix').value;
+
+for (var i = 0; i < 500; i++) {
+	text += '\u200E';
+	text += '\u200F';
+}
+
+text += suffix;
+
+copyTextToClipboard(text);
+alert("Copied");
+}
+
+function fallbackCopyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Fallback: Copying text command was ' + msg);
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err);
+  }
+
+  document.body.removeChild(textArea);
+}
+function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(text);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function() {
+    console.log('Async: Copying to clipboard was successful!');
+  }, function(err) {
+    console.error('Async: Could not copy text: ', err);
+  });
+}
+
+var copyBtn = document.getElementById("copybtn");
+
+copyBtn.addEventListener('click', function(event) {
+  work();
+});
+}
+
+        </script>
+    </head>
+    <body>
+        <!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+Prefix<input type="text" id="prefix">
+<br>
+Suffix<input name="Suffix" type="text" id="suffix">
+<br>
+<button onclick="work()" id="copybtn">Copy</button>
+
+</body>
+</html>
+    </body>
+</html>
